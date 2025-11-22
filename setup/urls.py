@@ -16,7 +16,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # Rota para baixar o arquivo de esquema (YAML/JSON)
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+
+    # Rota para a interface visual do Swagger (A que você quer!)
+    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+
+    # Rota opcional (Redoc - outra interface visual)
+    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+
+    path('', RedirectView.as_view(url='/api/schema/swagger-ui/', permanent=False)),
 ]
