@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # Serviço do Django
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app # Sincroniza sua pasta local com o container (Hot Reload)
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_NAME=gestao_db
+      - DB_USER=postgres
+      - DB_PASS=admin
+
+  # Serviço do Banco de Dados
+  db:
+    image: postgres:15
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=gestao_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+
+volumes:
+  pgdata:
