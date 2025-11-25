@@ -74,6 +74,7 @@ O projeto conta com uma suíte de testes automatizados que valida desde a criaç
 O projeto possui um workflow configurado no GitHub Actions que realiza:
 
 1.**Integração Contínua (CI):** A cada push, o ambiente é recriado e todos os testes são executados.
+
 2.**Entrega Contínua (CD):** Se os testes passarem na branch main, uma nova imagem Docker é construída e publicada automaticamente no Docker Hub.
 
 
