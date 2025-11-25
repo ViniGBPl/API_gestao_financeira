@@ -44,31 +44,31 @@ A forma recomendada de executar o projeto é utilizando **Docker**, garantindo q
    cd API_gestao_financeira
    ```
 2. **Suba o ambiente (Aplicação + Banco de Dados):**
-  ```bash
-  docker-compose up -d --build
-  ```
+    ```bash
+    docker-compose up -d --build
+    ```
   Isso irá baixar a imagem do Postgres, construir a imagem da API e configurar a rede automaticamente.
 
 3. **Aplique as migrações (Configuração inicial do Banco):**
-   ```bash
+    ```bash
    docker-compose exec web python manage.py migrate
-   ```
+    ```
 4. **(Opcional) Crie um superusuário para o Admin:**
-  ```bash
+    ```bash
    docker-compose exec web python manage.py createsuperuser
-  ```
+    ```
 ## 🔗 Acessando a Aplicação
-API (Swagger UI): http://localhost:8000/api/schema/swagger-ui/
+- API (Swagger UI): http://localhost:8000/api/schema/swagger-ui/
 
-Painel Admin: http://localhost:8000/admin/
+- Painel Admin: http://localhost:8000/admin/
 
 ## ✅ Testes e Qualidade
 
 O projeto conta com uma suíte de testes automatizados que valida desde a criação de lançamentos até a geração de binários (PDFs). Para rodar os testes dentro do container:
 
-```bash
-docker-compose exec web python manage.py test
-```
+  ```bash
+  docker-compose exec web python manage.py test
+  ```
 ## ⚙️ Estrutura de CI/CD
 
 O projeto possui um workflow configurado no GitHub Actions que realiza:
