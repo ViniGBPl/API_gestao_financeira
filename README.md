@@ -1,88 +1,80 @@
-# 💰 API de Gestão Financeira Pessoal
+# 💰 API de Gestão Financeira
 
-![Status](https://img.shields.io/badge/Status-Em_Desenvolvimento-yellow)
-![Python](https://img.shields.io/badge/Python-3.10+-blue)
-![Django](https://img.shields.io/badge/Django-5.0+-green)
+![Status](https://img.shields.io/badge/Status-Concluído-brightgreen)
+![CI/CD](https://img.shields.io/github/actions/workflow/status/ViniGBPl/API_gestao_financeira/ci_cd.yml?label=CI%2FCD&logo=github)
+![Docker](https://img.shields.io/badge/Docker-Container-blue?logo=docker)
+![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python)
+![Django](https://img.shields.io/badge/Django-5.0+-092E20?logo=django)
 
-Uma API RESTful desenvolvida para auxiliar no controle de finanças pessoais. O sistema permite o registro de receitas e despesas, gera relatórios mensais de saldo e oferece exportação de dados em formatos CSV e PDF.
+Uma API RESTful completa e containerizada para controle de finanças pessoais. O sistema permite o registro de receitas e despesas, gera relatórios mensais consolidados e oferece exportação de dados (CSV/PDF), tudo documentado automaticamente via Swagger.
 
-Este projeto foi construído com foco em boas práticas de desenvolvimento backend, organização de código e documentação automática.
+Este projeto demonstra um ciclo completo de **DevOps** e Engenharia de Software, incluindo testes automatizados, banco de dados relacional robusto e pipelines de entrega contínua.
 
 ## 🚀 Funcionalidades Principais
 
-- **CRUD de Transações:** Cadastro, listagem, atualização e remoção de Receitas e Despesas.
-- **Cálculo de Saldo:** Endpoint dedicado que consolida os lançamentos do mês e retorna o saldo final.
-- **Relatórios:**
-  - Exportação de extrato em **CSV** (Planilhas).
-  - Exportação de relatório em **PDF**.
-- **Documentação Interativa:** Swagger UI (OpenAPI) configurado.
+- **CRUD Completo:** Gestão de Receitas e Despesas com validações de negócio.
+- **Dashboard Financeiro:** Endpoint dedicado (`/saldo_mensal`) que utiliza agregação de dados no banco para performance.
+- **Relatórios Dinâmicos:**
+  - Extrato em **CSV** (Planilhas).
+  - Relatório gerencial em **PDF** (Gerado com ReportLab).
+- **Documentação Interativa:** Interface Swagger UI/OpenAPI automática.
+- **Filtros Avançados:** Busca por descrição, filtro por tipo/data e ordenação dinâmica.
 
-## 🛠️ Tecnologias Utilizadas
+## 🛠️ Stack Tecnológica & Engenharia
 
-- **Linguagem:** Python
-- **Framework Principal:** Django
-- **API:** Django REST Framework (DRF)
-- **Documentação:** Drf-spectacular (Swagger)
-- **Geração de PDF:** ReportLab
-- **Banco de Dados:** SQLite (Desenvolvimento)
+- **Linguagem:** Python 3.12
+- **Framework:** Django & Django REST Framework
+- **Banco de Dados:** PostgreSQL 15 (Substituindo o SQLite para produção)
+- **Infraestrutura:** Docker & Docker Compose (Multi-stage build)
+- **CI/CD:** GitHub Actions (Pipeline de Testes e Deploy no Docker Hub)
+- **Testes:** Unittest/APITestCase (Cobertura de models, views e regras de negócio)
 
-## 📦 Como rodar o projeto localmente
+## 📦 Como rodar o projeto
 
-Siga os passos abaixo para executar a API na sua máquina:
+A forma recomendada de executar o projeto é utilizando **Docker**, garantindo que o ambiente seja idêntico ao de desenvolvimento e produção.
 
-### 1. Clone o repositório
+### Pré-requisitos
+- Docker e Docker Compose instalados.
+
+### Passo a Passo
+
+1. **Clone o repositório:**
+   ```bash
+   git clone [https://github.com/ViniGBPl/API_gestao_financeira.git](https://github.com/ViniGBPl/API_gestao_financeira.git)
+   cd API_gestao_financeira
+   ```
+2. **Suba o ambiente (Aplicação + Banco de Dados):**
+  ```bash
+  docker-compose up -d --build
+  ```
+  Isso irá baixar a imagem do Postgres, construir a imagem da API e configurar a rede automaticamente.
+
+3. **Aplique as migrações (Configuração inicial do Banco):**
+   ```bash
+   docker-compose exec web python manage.py migrate
+   ```
+4. **(Opcional) Crie um superusuário para o Admin:**
+  ```bash
+   docker-compose exec web python manage.py createsuperuser
+  ```
+## 🔗 Acessando a Aplicação
+API (Swagger UI): http://localhost:8000/api/schema/swagger-ui/
+
+Painel Admin: http://localhost:8000/admin/
+
+## ✅ Testes e Qualidade
+
+O projeto conta com uma suíte de testes automatizados que valida desde a criação de lançamentos até a geração de binários (PDFs). Para rodar os testes dentro do container:
+
 ```bash
-git clone [https://github.com/ViniGBPl/API_gestao_financeira.git](https://github.com/ViniGBPl/API_gestao_financeira.git)
-cd API_gestao_financeira
+docker-compose exec web python manage.py test
 ```
+## ⚙️ Estrutura de CI/CD
 
-### 2. Crie e ative o ambiente virtual
+O projeto possui um workflow configurado no GitHub Actions que realiza:
 
-#### Windows
-```bash
-python -m venv .venv
-.venv\Scripts\activate
-```
-
-#### Linux/Mac
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-```
-
-### 3. Instale as dependências
-
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Execute as migrações e inicie o servidor
-
-````bash
-python manage.py migrate
-python manage.py runserver
-`````
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+1.**Integração Contínua (CI):** A cada push, o ambiente é recriado e todos os testes são executados.
+2.**Entrega Contínua (CD):** Se os testes passarem na branch main, uma nova imagem Docker é construída e publicada automaticamente no Docker Hub.
 
 
 
