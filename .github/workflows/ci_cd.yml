@@ -1,5 +1,6 @@
 name: CI/CD Pipeline
 
+# Define quando o pipeline deve rodar
 on:
   push:
     branches: [ "main" ]
@@ -7,26 +8,33 @@ on:
     branches: [ "main" ]
 
 jobs:
+
   test:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout do código
       uses: actions/checkout@v4
 
+
     - name: Subir ambiente com Docker Compose
-      run: docker-compose up -d --build
+    
+      run: docker compose up -d --build
 
     - name: Esperar base de dados
       run: sleep 10
 
+  
     - name: Rodar Testes
-      run: docker-compose exec -T web python manage.py test
+     
+      run: docker compose exec -T web python manage.py test
 
     - name: Desligar containers
-      run: docker-compose down
+     
+      run: docker compose down
 
+ 
   build-and-push:
-    needs: test # Só corre se os testes passarem!
+    needs: test 
     runs-on: ubuntu-latest
     # Só faz deploy se for um push na main (não em PRs)
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -46,4 +54,5 @@ jobs:
       with:
         context: .
         push: true
+       
         tags: ${{ secrets.DOCKER_USERNAME }}/api-gestao-financeira:latest
